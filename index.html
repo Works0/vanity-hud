@@ -6,9 +6,9 @@
     <title>Aesthetic Vanity HUD</title>
     <style>
         body {
-            /* Replace 'background.jpg' with your filename if different */
-            background-image: url('makeupbag1.jpg');
-            background-size: cover;
+            /* Ensure background.jpg is in the same folder as this file */
+            background-image: url('background.jpg');
+            background-size: contain; /* Shows the full image */
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -21,18 +21,32 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            position: relative;
         }
 
-        /* The Box Container */
+        /* Dark overlay for readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 50% dark overlay */
+            z-index: 0;
+        }
+
+        /* The container box */
         .container {
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-            border: 2px solid #ffffff;       /* This is your border */
-            border-radius: 15px;             /* Rounded corners */
+            position: relative;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ffffff;
+            border-radius: 15px;
             padding: 40px;
             text-align: center;
             max-width: 500px;
             width: 90%;
-            backdrop-filter: blur(5px);      /* Slight glass effect */
         }
 
         h1 {
@@ -40,6 +54,7 @@
             letter-spacing: 2px;
             margin-bottom: 30px;
             text-align: center;
+            margin-top: 0;
         }
 
         .button-container {
@@ -70,10 +85,8 @@
 </head>
 <body>
 
-    <!-- Everything is wrapped in this container -->
     <div class="container">
-        <h1>COREX//SYNC</h1>
-
+        <h1>Aesthetic Vanity</h1>
         <div class="button-container">
             <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
             <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
@@ -93,12 +106,7 @@
     <script>
         function sendCustomData(buttonElement, targetPart, colorName) {
             let simUrl = window.location.hash.substring(1);
-            if (!simUrl) {
-                buttonElement.innerText = "URL BLOCKED";
-                buttonElement.style.borderColor = "#ff4444";
-                buttonElement.style.color = "#ff4444";
-                return;
-            }
+            if (!simUrl) { return; }
             simUrl = decodeURIComponent(simUrl);
             const form = document.getElementById('sl_form');
             const input = document.getElementById('payload_data');
