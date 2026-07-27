@@ -1,99 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesthetic Vanity HUD</title>
-    <style>
-        body {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Vanity HUD</title>
+    <style>
+        body {
+            /* Replace the URL below with your image link */
+            background-image: ('makeupbag.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #1a1a1a;
+            
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
 
-        h1 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+        /* Dark overlay for readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 50% dark overlay */
+            z-index: 0;
+        }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
-            max-width: 500px;
-        }
+        /* Keep content on top of overlay */
+        h1, .button-container {
+            position: relative;
+            z-index: 1;
+        }
 
-        .vanity-btn {
-            background-color: transparent;
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            padding: 15px 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 140px;
-        }
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
 
-        .vanity-btn:hover {
-            background-color: #ffffff;
-            color: #1a1a1a;
-        }
-    </style>
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            max-width: 500px;
+        }
+
+        .vanity-btn {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 15px 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 140px;
+        }
+
+        .vanity-btn:hover {
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Aesthetic Vanity</h1>
+    <h1>Aesthetic Vanity</h1>
 
-    <div class="button-container">
-        <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'lashes', 'style1')">Lashes</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'lips', 'style1')">Lip's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'blush', 'style1')">Blush</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'moles', 'style1')">Moles</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'tattoos', 'style1')">Tattoo's</button>
-    </div>
+    <div class="button-container">
+        <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'lashes', 'style1')">Lashes</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'lips', 'style1')">Lip's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'blush', 'style1')">Blush</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'moles', 'style1')">Moles</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'tattoos', 'style1')">Tattoo's</button>
+    </div>
 
-    <iframe name="secret_frame" style="display:none;"></iframe>
-    <form id="sl_form" method="POST" target="secret_frame" style="display:none;">
-        <input type="hidden" id="payload_data" name="data">
-    </form>
+    <iframe name="secret_frame" style="display:none;"></iframe>
+    <form id="sl_form" method="POST" target="secret_frame" style="display:none;">
+        <input type="hidden" id="payload_data" name="data">
+    </form>
 
-    <script>
-        function sendCustomData(buttonElement, targetPart, colorName) {
-            // Grabs everything after the '#' in the address bar
-            let simUrl = window.location.hash.substring(1);
+    <script>
+        function sendCustomData(buttonElement, targetPart, colorName) {
+            // Grabs everything after the '#' in the address bar
+            let simUrl = window.location.hash.substring(1);
 
-            // The Visual Tripwire
-            if (!simUrl) {
-                buttonElement.innerText = "URL BLOCKED";
-                buttonElement.style.borderColor = "#ff4444";
-                buttonElement.style.color = "#ff4444";
-                return;
-            }
+            // The Visual Tripwire
+            if (!simUrl) {
+                buttonElement.innerText = "URL BLOCKED";
+                buttonElement.style.borderColor = "#ff4444";
+                buttonElement.style.color = "#ff4444";
+                return;
+            }
 
-            // Decode the URL to ensure it is clean
-            simUrl = decodeURIComponent(simUrl);
+            // Decode the URL to ensure it is clean
+            simUrl = decodeURIComponent(simUrl);
 
-            const form = document.getElementById('sl_form');
-            const input = document.getElementById('payload_data');
-            
-            form.action = simUrl;
-            input.value = targetPart + "," + colorName;
-            form.submit();
-        }
-    </script>
+            const form = document.getElementById('sl_form');
+            const input = document.getElementById('payload_data');
+            
+            form.action = simUrl;
+            input.value = targetPart + "," + colorName;
+            form.submit();
+        }
+    </script>
 </body>
 </html>
