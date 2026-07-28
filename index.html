@@ -23,6 +23,7 @@
             position: relative;
         }
 
+        /* Dark overlay for readability */
         body::before {
             content: "";
             position: absolute;
@@ -37,7 +38,8 @@
         .container {
             position: relative;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.1);
+            /* Slightly darker background for better contrast */
+            background: rgba(0, 0, 0, 0.6);
             border: 2px solid #ffffff;
             border-radius: 15px;
             padding: 40px;
@@ -53,6 +55,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 30px;
+            margin-top: 0;
         }
 
         .button-container {
@@ -63,7 +66,8 @@
         }
 
         .vanity-btn {
-            background-color: transparent;
+            /* Button background color added */
+            background-color: rgba(0, 0, 0, 0.5);
             color: #ffffff;
             border: 1px solid #ffffff;
             padding: 15px 30px;
