@@ -6,9 +6,12 @@
     <style>
         body { background-image: url('makeupbag1.jpg'); background-size: 60% auto; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000000; color: #ffffff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
         .container { background: rgba(0, 0, 0, 0.6); border: 2px solid #ffffff; border-radius: 15px; padding: 40px; text-align: center; width: 350px; min-height: 400px; }
-        .menu-view { display: none; }
-        .menu-view.active { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .vanity-btn { background-color: rgba(0, 0, 0, 0.5); color: #ffffff; border: 1px solid #ffffff; padding: 12px; text-transform: uppercase; font-weight: bold; cursor: pointer; width: 140px; }
+        
+        /* Menu Logic */
+        .menu-view { display: none; flex-direction: column; align-items: center; gap: 10px; }
+        .menu-view.active { display: flex; }
+        
+        .vanity-btn { background-color: rgba(0, 0, 0, 0.5); color: #ffffff; border: 1px solid #ffffff; padding: 12px; text-transform: uppercase; font-weight: bold; cursor: pointer; width: 140px; margin: 5px; }
         .vanity-btn:hover { background-color: #ffffff; color: #000000; }
     </style>
 </head>
@@ -18,29 +21,31 @@
         
         <!-- Main Menu -->
         <div id="main-menu" class="menu-view active">
-            <button class="vanity-btn" onclick="showSubmenu('eyes')">Eye's</button>
-            <button class="vanity-btn" onclick="showSubmenu('brows')">Brow's</button>
-            <button class="vanity-btn" onclick="showSubmenu('lashes')">Lashes</button>
-            <button class="vanity-btn" onclick="showSubmenu('lips')">Lip's</button>
+            <button class="vanity-btn" onclick="show('eyes-menu')">Eye's</button>
+            <button class="vanity-btn" onclick="show('brows-menu')">Brow's</button>
+            <button class="vanity-btn" onclick="show('lashes-menu')">Lashes</button>
+            <button class="vanity-btn" onclick="show('lips-menu')">Lip's</button>
         </div>
 
-        <!-- Example Submenu for Eyes -->
+        <!-- Submenus -->
         <div id="eyes-menu" class="menu-view">
             <button class="vanity-btn" onclick="send('eyes', 'style1')">Style 1</button>
-            <button class="vanity-btn" onclick="send('eyes', 'style2')">Style 2</button>
-            <button class="vanity-btn" onclick="goBack()">Back</button>
+            <button class="vanity-btn" onclick="show('main-menu')">Back</button>
+        </div>
+        <div id="brows-menu" class="menu-view">
+            <button class="vanity-btn" onclick="send('brows', 'style1')">Style 1</button>
+            <button class="vanity-btn" onclick="show('main-menu')">Back</button>
         </div>
     </div>
 
     <script>
-        function showSubmenu(id) {
-            document.getElementById('main-menu').classList.remove('active');
-            document.getElementById(id + '-menu').classList.add('active');
-        }
-        function goBack() {
+        function show(id) {
+            // Hide all menus
             document.querySelectorAll('.menu-view').forEach(m => m.classList.remove('active'));
-            document.getElementById('main-menu').classList.add('active');
+            // Show selected menu
+            document.getElementById(id).classList.add('active');
         }
+
         function send(part, style) {
             let simUrl = window.location.hash.substring(1);
             if(!simUrl) return;
