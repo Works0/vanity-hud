@@ -31,12 +31,12 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.3);
-            z-index: 0; /* Behind everything */
+            z-index: 0;
         }
 
         .container {
             position: relative;
-            z-index: 10; /* Make sure this is above the overlay */
+            z-index: 10;
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid #ffffff;
             border-radius: 15px;
@@ -58,7 +58,7 @@
 
         .button-container {
             position: relative;
-            z-index: 20; /* Specifically ensure buttons are clickable */
+            z-index: 20;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -76,7 +76,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             width: 140px;
-            pointer-events: auto; /* Ensures clicks register */
+            pointer-events: auto;
         }
 
         .vanity-btn:hover {
@@ -90,25 +90,34 @@
     <div class="container">
         <h1>COREX//SYNC</h1>
         <div class="button-container">
-            <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'lashes', 'style1')">Lashes</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'lips', 'style1')">Lip's</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'blush', 'style1')">Blush</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'moles', 'style1')">Moles</button>
-            <button class="vanity-btn" onclick="sendCustomData(this, 'tattoos', 'style1')">Tattoo's</button>
+            <button class="vanity-btn" onclick="sendCustomData('eyes', 'style1')">Eye's</button>
+            <button class="vanity-btn" onclick="sendCustomData('brows', 'style1')">Brow's</button>
+            <button class="vanity-btn" onclick="sendCustomData('lashes', 'style1')">Lashes</button>
+            <button class="vanity-btn" onclick="sendCustomData('lips', 'style1')">Lip's</button>
+            <button class="vanity-btn" onclick="sendCustomData('blush', 'style1')">Blush</button>
+            <button class="vanity-btn" onclick="sendCustomData('moles', 'style1')">Moles</button>
+            <button class="vanity-btn" onclick="sendCustomData('tattoos', 'style1')">Tattoo's</button>
         </div>
     </div>
 
-    <iframe name="secret_frame" style="display:none;"></iframe>
+    <!-- The form -->
     <form id="sl_form" method="POST" target="secret_frame" style="display:none;">
         <input type="hidden" id="payload_data" name="data">
     </form>
+    <iframe name="secret_frame" style="display:none;"></iframe>
 
     <script>
-        function sendCustomData(buttonElement, targetPart, colorName) {
+        function sendCustomData(targetPart, colorName) {
             let simUrl = window.location.hash.substring(1);
-            if (!simUrl) { console.log("URL missing"); return; }
+            
+            // DEBUG: This alert proves if your click is registering
+            alert("DEBUG: Sending data to " + simUrl); 
+
+            if (!simUrl) {
+                alert("ERROR: No URL found in hash!");
+                return;
+            }
+            
             simUrl = decodeURIComponent(simUrl);
             const form = document.getElementById('sl_form');
             const input = document.getElementById('payload_data');
