@@ -45,17 +45,18 @@
 <body>
     <div class="container">
         <h1>COREX//SYNC</h1>
-        <!-- Buttons trigger the send function -->
         <button class="vanity-btn" onclick="send('eyes','style1')">Eye's</button>
         <button class="vanity-btn" onclick="send('brows','style1')">Brow's</button>
-        <button class="vanity-btn" onclick="send('lashes','style1')">Lashes</button>
-        <button class="vanity-btn" onclick="send('lips','style1')">Lip's</button>
     </div>
 
     <script>
         function send(part, style) {
-            // We use a custom link that the LSL script can "intercept"
-            window.location.href = "COREX//SYNC_Makep_Hud://" + part + "/" + style;
+            // This sends a silent request to your LSL script URL
+            fetch(window.location.href, {
+                method: 'POST',
+                body: "cmd=" + part + ":" + style
+            });
+            console.log("Sent: " + part + ":" + style);
         }
     </script>
 </body>
