@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COREX//SYNC_Makeup_HUD</title>
+    <title>Aesthetic Vanity HUD</title>
     <style>
         body {
-            background-image: url('makeupbag.jpg');
-            /* Image is now scaled to 60% of the width, maintaining aspect ratio */
-            background-size: 90% auto; 
+            background-image: url('makeupbag1.jpg');
+            background-size: 60% auto; 
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -24,7 +23,6 @@
             position: relative;
         }
 
-        /* Dark overlay for readability */
         body::before {
             content: "";
             position: absolute;
@@ -33,12 +31,12 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.3);
-            z-index: 0;
+            z-index: 0; /* Behind everything */
         }
 
         .container {
             position: relative;
-            z-index: 1;
+            z-index: 10; /* Make sure this is above the overlay */
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid #ffffff;
             border-radius: 15px;
@@ -59,6 +57,8 @@
         }
 
         .button-container {
+            position: relative;
+            z-index: 20; /* Specifically ensure buttons are clickable */
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -76,6 +76,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             width: 140px;
+            pointer-events: auto; /* Ensures clicks register */
         }
 
         .vanity-btn:hover {
@@ -107,7 +108,7 @@
     <script>
         function sendCustomData(buttonElement, targetPart, colorName) {
             let simUrl = window.location.hash.substring(1);
-            if (!simUrl) { return; }
+            if (!simUrl) { console.log("URL missing"); return; }
             simUrl = decodeURIComponent(simUrl);
             const form = document.getElementById('sl_form');
             const input = document.getElementById('payload_data');
