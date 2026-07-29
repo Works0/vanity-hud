@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>COREX//SYNC_Makeup_Hud</title>
+    <title>COREX//SYNC</title>
     <style>
         body {
             background-image: url('makeupbag1.jpg');
@@ -29,34 +29,45 @@
             width: 350px; 
             min-height: 400px;
         }
+        h1 { text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .button-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         .vanity-btn {
             background-color: rgba(0, 0, 0, 0.5);
             color: #ffffff;
             border: 1px solid #ffffff;
-            padding: 15px;
-            margin: 8px;
+            padding: 12px;
             text-transform: uppercase;
             font-weight: bold;
             cursor: pointer;
             width: 140px;
         }
+        .vanity-btn:hover { background-color: #ffffff; color: #000000; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>COREX//SYNC</h1>
-        <button class="vanity-btn" onclick="send('eyes','style1')">Eye's</button>
-        <button class="vanity-btn" onclick="send('brows','style1')">Brow's</button>
+        <div class="button-container">
+            <button class="vanity-btn" onclick="send('eyes', 'style1')">Eye's</button>
+            <button class="vanity-btn" onclick="send('brows', 'style1')">Brow's</button>
+            <button class="vanity-btn" onclick="send('lashes', 'style1')">Lashes</button>
+            <button class="vanity-btn" onclick="send('lips', 'style1')">Lip's</button>
+            <button class="vanity-btn" onclick="send('blush', 'style1')">Blush</button>
+            <button class="vanity-btn" onclick="send('moles', 'style1')">Moles</button>
+            <button class="vanity-btn" onclick="send('tattoos', 'style1')">Tattoo's</button>
+        </div>
     </div>
 
     <script>
         function send(part, style) {
-            // This sends a silent request to your LSL script URL
-            fetch(window.location.href, {
+            // This grabs the current Sim URL dynamically
+            let simUrl = window.location.hash.substring(1);
+            if(!simUrl) return;
+            
+            fetch(decodeURIComponent(simUrl), {
                 method: 'POST',
-                body: "cmd=" + part + ":" + style
+                body: "data=" + part + "," + style
             });
-            console.log("Sent: " + part + ":" + style);
         }
     </script>
 </body>
