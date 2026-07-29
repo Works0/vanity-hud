@@ -1,56 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>COREX//SYNC_Makeup_Hud</title>
-    <style>
-        body { background-image: url('makeupbag1.jpg'); background-size: 60% auto; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000000; color: #ffffff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-        .container { background: rgba(0, 0, 0, 0.6); border: 2px solid #ffffff; border-radius: 15px; padding: 40px; text-align: center; width: 350px; min-height: 400px; }
-        
-        /* Menu Logic */
-        .menu-view { display: none; flex-direction: column; align-items: center; gap: 10px; }
-        .menu-view.active { display: flex; }
-        
-        .vanity-btn { background-color: rgba(0, 0, 0, 0.5); color: #ffffff; border: 1px solid #ffffff; padding: 12px; text-transform: uppercase; font-weight: bold; cursor: pointer; width: 140px; margin: 5px; }
-        .vanity-btn:hover { background-color: #ffffff; color: #000000; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Vanity HUD</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            max-width: 500px;
+        }
+
+        .vanity-btn {
+            background-color: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 15px 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 140px;
+        }
+
+        .vanity-btn:hover {
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>COREX//SYNC</h1>
-        
-        <!-- Main Menu -->
-        <div id="main-menu" class="menu-view active">
-            <button class="vanity-btn" onclick="show('eyes-menu')">Eye's</button>
-            <button class="vanity-btn" onclick="show('brows-menu')">Brow's</button>
-            <button class="vanity-btn" onclick="show('lashes-menu')">Lashes</button>
-            <button class="vanity-btn" onclick="show('lips-menu')">Lip's</button>
-        </div>
 
-        <!-- Submenus -->
-        <div id="eyes-menu" class="menu-view">
-            <button class="vanity-btn" onclick="send('eyes', 'style1')">Style 1</button>
-            <button class="vanity-btn" onclick="show('main-menu')">Back</button>
-        </div>
-        <div id="brows-menu" class="menu-view">
-            <button class="vanity-btn" onclick="send('brows', 'style1')">Style 1</button>
-            <button class="vanity-btn" onclick="show('main-menu')">Back</button>
-        </div>
-    </div>
+    <h1>Aesthetic Vanity</h1>
 
-    <script>
-        function show(id) {
-            // Hide all menus
-            document.querySelectorAll('.menu-view').forEach(m => m.classList.remove('active'));
-            // Show selected menu
-            document.getElementById(id).classList.add('active');
-        }
+    <div class="button-container">
+        <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'lashes', 'style1')">Lashes</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'lips', 'style1')">Lip's</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'blush', 'style1')">Blush</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'moles', 'style1')">Moles</button>
+        <button class="vanity-btn" onclick="sendCustomData(this, 'tattoos', 'style1')">Tattoo's</button>
+    </div>
 
-        function send(part, style) {
-            let simUrl = window.location.hash.substring(1);
-            if(!simUrl) return;
-            fetch(decodeURIComponent(simUrl), { method: 'POST', body: "data=" + part + "," + style });
-        }
-    </script>
+    <iframe name="secret_frame" style="display:none;"></iframe>
+    <form id="sl_form" method="POST" target="secret_frame" style="display:none;">
+        <input type="hidden" id="payload_data" name="data">
+    </form>
+
+    <script>
+        function sendCustomData(buttonElement, targetPart, colorName) {
+            // Grabs everything after the '#' in the address bar
+            let simUrl = window.location.hash.substring(1);
+
+            // The Visual Tripwire
+            if (!simUrl) {
+                buttonElement.innerText = "URL BLOCKED";
+                buttonElement.style.borderColor = "#ff4444";
+                buttonElement.style.color = "#ff4444";
+                return;
+            }
+
+            // Decode the URL to ensure it is clean
+            simUrl = decodeURIComponent(simUrl);
+
+            const form = document.getElementById('sl_form');
+            const input = document.getElementById('payload_data');
+            
+            form.action = simUrl;
+            input.value = targetPart + "," + colorName;
+            form.submit();
+        }
+    </script>
 </body>
 </html>
