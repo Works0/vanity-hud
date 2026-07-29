@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COREX//_Makeup_HUD</title>
+    <title>COREX//SYNC</title>
     <style>
         body {
             background-image: url('makeupbag1.jpg');
@@ -46,6 +45,7 @@
 <body>
     <div class="container">
         <h1>COREX//SYNC</h1>
+        <!-- Buttons trigger the send function -->
         <button class="vanity-btn" onclick="send('eyes','style1')">Eye's</button>
         <button class="vanity-btn" onclick="send('brows','style1')">Brow's</button>
         <button class="vanity-btn" onclick="send('lashes','style1')">Lashes</button>
@@ -54,8 +54,8 @@
 
     <script>
         function send(part, style) {
-            // This sends a special command to the LSL script
-            window.location.href = "secondlife:///app/agent/00000000-0000-0000-0000-000000000000/about?cmd=" + part + ":" + style;
+            // We use a custom link that the LSL script can "intercept"
+            window.location.href = "COREX//SYNC_Makep_Hud://" + part + "/" + style;
         }
     </script>
 </body>
