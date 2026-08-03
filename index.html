@@ -1,99 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COREX//SYNC_Makeup_HUD</title>
-    <style>
-        body {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+<script>
+        function sendCustomData(buttonElement, targetPart, colorName) {
+            // Safely grab the hash from the parent or current window location
+            let simUrl = window.location.hash ? window.location.hash.substring(1) : "";
 
-        h1 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+            // If the hash isn't on the URL directly, check if it was passed via search params or fallback
+            if (!simUrl && window.location.search) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('cap')) {
+                    simUrl = urlParams.get('cap');
+                }
+            }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
-            max-width: 500px;
-        }
+            // The Visual Tripwire if URL is missing
+            if (!simUrl) {
+                buttonElement.innerText = "URL BLOCKED";
+                buttonElement.style.borderColor = "#ff4444";
+                buttonElement.style.color = "#ff4444";
+                return;
+            }
 
-        .vanity-btn {
-            background-color: transparent;
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            padding: 15px 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 140px;
-        }
+            // Decode the URL to ensure it is clean
+            simUrl = decodeURIComponent(simUrl);
 
-        .vanity-btn:hover {
-            background-color: #ffffff;
-            color: #1a1a1a;
-        }
-    </style>
-</head>
-<body>
+            const form = document.getElementById('sl_form');
+            const input = document.getElementById('payload_data');
+            
+            form.action = simUrl;
+            input.value = targetPart + "," + colorName;
+            form.submit();
 
-    <h1>COREX//SYNC</h1>
-
-    <div class="button-container">
-        <button class="vanity-btn" onclick="sendCustomData(this, 'eyes', 'style1')">Eye's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'brows', 'style1')">Brow's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'lashes', 'style1')">Lashes</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'lips', 'style1')">Lip's</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'blush', 'style1')">Blush</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'moles', 'style1')">Moles</button>
-        <button class="vanity-btn" onclick="sendCustomData(this, 'tattoos', 'style1')">Tattoo's</button>
-    </div>
-
-    <iframe name="secret_frame" style="display:none;"></iframe>
-    <form id="sl_form" method="POST" target="secret_frame" style="display:none;">
-        <input type="hidden" id="payload_data" name="data">
-    </form>
-
-    <script>
-        function sendCustomData(buttonElement, targetPart, colorName) {
-            // Grabs everything after the '#' in the address bar
-            let simUrl = window.location.hash.substring(1);
-
-            // The Visual Tripwire
-            if (!simUrl) {
-                buttonElement.innerText = "URL BLOCKED";
-                buttonElement.style.borderColor = "#ff4444";
-                buttonElement.style.color = "#ff4444";
-                return;
-            }
-
-            // Decode the URL to ensure it is clean
-            simUrl = decodeURIComponent(simUrl);
-
-            const form = document.getElementById('sl_form');
-            const input = document.getElementById('payload_data');
-            
-            form.action = simUrl;
-            input.value = targetPart + "," + colorName;
-            form.submit();
-        }
-    </script>
-</body>
-</html>
+            // Give a subtle visual feedback that click went through
+            let originalText = buttonElement.innerText;
+            buttonElement.innerText = "SENT";
+            setTimeout(() => {
+                buttonElement.innerText = originalText;
+            }, 600);
+        }
+    </script>
